@@ -282,7 +282,8 @@ CI/end-to-end tests sponsored by: [CNCF](https://cncf.io), [Equinix Metal](https
 
 See the [test matrix](docs/test_cases.md) for details.
 
-
+#   Install Simple Example Kubespray
+##  Create Bastion Node
 ##  Pull kubespray in Bastion Node
 ##  Copy Bastion SSH Public to nodes
 ```
@@ -354,20 +355,20 @@ validate HA-PROXY config before restarting it:
 run ansible ping in bastion:
 
 ```
-ansible all -i inventory/shoniz/inventory.ini -m ping
+ansible all -i inventory/project/inventory.ini -m ping
 ```
 Let's go to install cluster with kubespray ansible:
 
 ```
-ansible-playbook -i inventory/shoniz/inventory.ini cluster.yml
+ansible-playbook -i inventory/projrct/inventory.ini cluster.yml
 ```
 
 ##  Changes And Updates
-change your configs in inventory.ini and yml files for example you added worker2:
+change your configs in inventory.ini and yml files for example you added worker:
 
 ```
-ansible-playbook -i inventory/shoniz/inventory.ini playbooks/facts.yml
+ansible-playbook -i inventory/project/inventory.ini playbooks/facts.yml
 ```
 ```
-ansible-playbook -i inventory/shoniz/inventory.ini playbooks/scale.yml --limit=worker2
+ansible-playbook -i inventory/project/inventory.ini playbooks/scale.yml --limit=worker
 ```
