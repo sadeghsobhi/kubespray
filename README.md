@@ -281,3 +281,93 @@ See also [Network checker](docs/netcheck.md).
 CI/end-to-end tests sponsored by: [CNCF](https://cncf.io), [Equinix Metal](https://metal.equinix.com/), [OVHcloud](https://www.ovhcloud.com/), [ELASTX](https://elastx.se/).
 
 See the [test matrix](docs/test_cases.md) for details.
+
+
+##  Pull kubespray in Bastion Node
+##  Copy Bastion SSH Public to nodes
+```
+ssh-copy-id users@nodes
+```
+##  Installing Ansible in Bastion
+
+```
+apt install -y python3-pip 
+cd /opt/kubespray
+pip install -r requirements-2.12.txt
+ansible --version
+```
+
+##  Configure kubespray in Bastion
+
+Take a copy of inventory/sample and rename it to inventory/yourClusterName.
+
+delete everything in group_vars/all just keep:
+```
+    # all.yml
+    # containerd.yml
+    # coreos.yml
+    # etcd.yml
+```    
+delete everything in group_vars/k8s_cluster just keep:
+```
+    # k8s-cluster.yml
+    # k8s-net-calico.yml
+```    
+config inventory/yourClusterName/group_vars/all/all.ini
+```
+    # External LB
+    # Internal loadbalancers
+    # upstream dns
+    # http_proxy and https_proxy and no_proxy
+    # download container
+```    
+config inventory/yourClusterName/group_vars/k8s_cluster/k8s_cluster.ini
+```
+    # kube_version
+    # kube_proxy_mode
+    # optionally for kube deamons
+    # optionally for OS system deamons
+    # LB SAN ip's, vip and hostname in: supplementry address in ssl keys
+```
+
+##  Configure LoadBalancers
+Load Balancer is out of kubespray. we config it manually.
+
+install on both loadbalancers:
+```
+apt install -y haproxy keepalived
+```
+
+config /etc/keepalived/keepalived.cfg. sample config is here: https://github.com/sadeghsobhi/keepalived
+
+config /etc/haproxy/haproxy.cfg. sample config is here: https://github.com/sadeghsobhi/haproxy
+
+validate HA-PROXY config before restarting it:
+
+```
+ haproxy -c -f /etc/haproxy/haproxy.cfg
+```
+```
+ service haproxy restart
+ ```
+##  Ansible Check And Start in Bastion
+run ansible ping in bastion:
+
+```
+ansible all -i inventory/shoniz/inventory.ini -m ping
+```
+Let's go to install cluster with kubespray ansible:
+
+```
+ansible-playbook -i inventory/shoniz/inventory.ini cluster.yml
+```
+
+##  Changes And Updates
+change your configs in inventory.ini and yml files for example you added worker2:
+
+```
+ansible-playbook -i inventory/shoniz/inventory.ini playbooks/facts.yml
+```
+```
+ansible-playbook -i inventory/shoniz/inventory.ini playbooks/scale.yml --limit=worker2
+```
