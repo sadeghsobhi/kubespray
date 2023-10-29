@@ -372,3 +372,7 @@ ansible-playbook -i inventory/project/inventory.ini playbooks/facts.yml
 ```
 ansible-playbook -i inventory/project/inventory.ini playbooks/scale.yml --limit=worker
 ```
+## Reset Cluster Completely
+```
+ansible-playbook -i inventory/yourClusterName/inventory.ini reset.yml --become --become-user=root
+```
