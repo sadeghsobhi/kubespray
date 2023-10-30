@@ -376,3 +376,10 @@ ansible-playbook -i inventory/project/inventory.ini playbooks/scale.yml --limit=
 ```
 ansible-playbook -i inventory/yourClusterName/inventory.ini reset.yml --become --become-user=root
 ```
+## Changes or Join new node And Updates
+change your configs in inventory.ini and yml files for example you added nodename
+```
+ansible-playbook -i inventory/yourClusterName/inventory.ini playbooks/facts.yml
+ansible-playbook -i inventory/yourClusterName/inventory.ini playbooks/scale.yml --limit=nodename
+```
+
