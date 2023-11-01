@@ -376,6 +376,16 @@ ansible-playbook -i inventory/project/inventory.ini playbooks/scale.yml --limit=
 ```
 ansible-playbook -i inventory/yourClusterName/inventory.ini reset.yml --become --become-user=root
 ```
+## If Join new node in kubespray change ip node and cert in  node
+```
+kubectl -n kube-system get configmap kubeadm-config -o jsonpath='{.data.ClusterConfiguration}' > kubeadm.yaml
+vim kubeadm.yaml 
+kubeadm init phase certs apiserver --config kubeadm.yaml
+mv /etc/kubernetes/pki/apiserver.{crt,key} ~
+kubeadm init phase certs apiserver --config kubeadm.yaml
+kubeadm init phase upload-config kubeadm --config kubeadm.yaml
+```
+
 ## Changes or Join new node And Updates
 change your configs in inventory.ini and yml files for example you added nodename
 ```
