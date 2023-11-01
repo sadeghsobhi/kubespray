@@ -379,10 +379,10 @@ ansible-playbook -i inventory/yourClusterName/inventory.ini reset.yml --become -
 ## If Join new node on the kubespray change ip node and cert in  node
 ```
 kubectl -n kube-system get configmap kubeadm-config -o jsonpath='{.data.ClusterConfiguration}' > kubeadm.yaml
-vim kubeadm.yaml 
-kubeadm init phase certs apiserver --config kubeadm.yaml
+vim kubeadm.yaml
 mv /etc/kubernetes/pki/apiserver.{crt,key} ~
 kubeadm init phase certs apiserver --config kubeadm.yaml
+kubeadm init phase certs apiserver --config kubeadm.yaml # For version 1.5 below
 kubeadm init phase upload-config kubeadm --config kubeadm.yaml
 ```
 
