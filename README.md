@@ -376,7 +376,7 @@ ansible-playbook -i inventory/project/inventory.ini playbooks/scale.yml --limit=
 ```
 ansible-playbook -i inventory/yourClusterName/inventory.ini reset.yml --become --become-user=root
 ```
-## If Join new node in kubespray change ip node and cert in  node
+## If Join new node on the kubespray change ip node and cert in  node
 ```
 kubectl -n kube-system get configmap kubeadm-config -o jsonpath='{.data.ClusterConfiguration}' > kubeadm.yaml
 vim kubeadm.yaml 
